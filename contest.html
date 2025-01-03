@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Test</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+  <style>
+    .text-container {
+      position: relative;
+      width: 90%;
+      max-width: 800px;
+      font-size: 2rem;
+      margin-left: 420px;
+      line-height: 1.5;
+      text-align: center;
+      margin-top: 20px;
+      padding: 20px;
+      border: none;
+      cursor: text;
+    }
+
+    #displayText {
+      white-space: pre-wrap;
+    }
+
+    .correct {
+      color: #4caf50;
+    }
+
+    .incorrect {
+      color: #f44336;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.2em;
+      background-color: black;
+      vertical-align: middle;
+      animation: blink 0.5s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        background-color: transparent;
+      }
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: #ffffff;
+      background-color: #1abc9c;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .dark-theme button{
+      background-color: orange;
+    }
+    .dark-theme button:hover{
+      background-color: rgb(235, 183, 86);
+    }
+    .customization-bar {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 100%;
+      max-width: 800px;
+      margin-left: 420px;
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #2c3e50;
+      color: antiquewhite;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    label {
+      font-weight: bold;
+    }
+    .text-container {
+      font-family:monospace;
+  position: relative;
+  width: fit-content;
+  max-width: fit-content;
+  height: 180px; /* Limit height to show a few lines */
+  font-size: 2rem;
+  margin-left: 0px;
+  line-height: 1.5;
+  text-align: center; /* Align text to the left */
+  margin-top: 50px;
+  padding: 20px;
+  border: none;
+  overflow: hidden; /* Hide extra lines */
+  cursor: text;
+  background-color: #f8f8f8; /* Add a light background for better readability */
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#displayText {
+  white-space: pre-wrap;
+  overflow: hidden;
+}
+
+/* new   */
+
+
+.dark-theme {
+  background-color: #1e1e1e;
+  color: #f5f5f5;
+}
+.dark-theme h1{
+  color: aliceblue;
+}
+
+.text-container {
+  background-color: #2c3e50;
+  color: #e0e0e0;
+  border: 2px solid #4caf50;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+
+  </style>
+</head>
+<body>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+// Initialize Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyAv3G0dZo9wiK30joxt6d6lFr1XNo-e6x0",
+  authDomain: "typerivals-a55e5.firebaseapp.com",
+  projectId: "typerivals-a55e5",
+  storageBucket: "typerivals-a55e5.appspot.com",
+  messagingSenderId: "277969702382",
+  appId: "1:277969702382:web:cf9eeff47ee9c2a8f612ff",
+  measurementId: "G-7CN477QTKM",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// Check if user is logged in
+auth.onAuthStateChanged((user) => {
+  if (!user) {
+    // Redirect guest users to the login page
+    alert("Guest login detected. Please log in to participate in the contest.");
+    window.location.href = "login.html";
+  }
+});
+  </script>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">TypeRivals</a>
+    <ul class="nav">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="leaderboard.html">Leaderboard</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="contest.html" class="active">Contest</a></li>
+    </ul>
+    <button class="btn-toggle-theme" onclick="toggleTheme()">&#9790;</button>
+  </nav>
+
+  <!-- Contest Section -->
+  <section class="section section-boundary" style="border: none;">
+    <h1>Typing Test</h1>
+    <div class="customization-bar">
+      <div>
+        <label for="duration">Duration : </label>
+        <select id="duration" onchange="resetTest()">
+          <option value="15">15s</option>
+          <option value="30">30s</option>
+          <option value="60">1m</option>
+          <option value="120">2m</option>
+        </select>
+      </div>
+      <div>
+        <label for="difficulty">Difficulty : </label>
+        <select id="difficulty" onchange="resetTest()">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </div>
+    </div>
+
+
+   
+      <div class="text-container" id="displayText" tabindex="0"></div>
+    
+   <div style="margin-top: 50px;">
+    <button id="startButton" onclick="startTypingTest()">Start</button>
+    <button onclick="generateText()">Generate New Text</button>
+    <p id="timer" style="font-weight: bold; font-family: monospace;">Time: 0s</p>
+   </div> 
+    
+  </section>
+
+  <!-- Footer -->
+  <footer style="margin-top: 0rem;">
+    &copy; 2024 TypeRivals. All rights reserved.
+  </footer>
+
+  <script>
+    const displayTextElement = document.getElementById("displayText");
+    const startButton = document.getElementById("startButton");
+    const difficultySentences = {
+      easy: [
+    "the sun shines brightly in the sky and the birds are singing in the trees while children play happily in the park where the grass is green and the flowers are blooming in bright colors and the weather is warm and sunny and the day feels perfect as everyone enjoys their time outside walking running talking laughing and smiling all around the park where families sit on benches and eat sandwiches while others fly kites high in the air that gently sway with the wind as dogs bark and wag their tails while chasing balls across the open field and toddlers giggle as they try to blow bubbles which float in the air before popping softly and everyone seems to be in a good mood enjoying the beautiful day together without a worry in the world and the scene is peaceful and calm like a picture of joy and serenity that makes everyone smile and forget about their troubles as the day goes on and the sun slowly moves across the sky while casting long shadows on the ground that change shape as the hours pass and the children grow tired and sit down to rest with their parents who are happy to see them so joyful and free as they sip on cold drinks and chat quietly with each other about their plans for the week ahead while watching the sunset slowly begin to paint the horizon in shades of orange and pink that fade into the blue sky like a masterpiece created by nature itself and the moment feels magical and perfect and everyone takes a deep breath and feels grateful for the simple joys of life that make everything seem just a little bit brighter and more beautiful and worth cherishing forever.",
+    "the little boy ran across the beach his feet kicking up sand as he raced toward the waves crashing on the shore his laughter echoed in the wind carefree and full of joy as he tried to outrun the water only to be caught by the cool splash of the ocean as it reached the shoreline his parents watched from a nearby blanket their smiles wide and content as they shared stories from their childhoods recalling their own moments of fun at the beach the sun was setting painting the sky in hues of gold and pink creating a peaceful atmosphere that seemed to slow down time the sound of the waves became a gentle lullaby and the air smelled of salt and seaweed filling the lungs with a sense of calm the child stopped for a moment looking out at the horizon where the sky met the water his eyes wide with wonder as he marveled at the endless expanse before him his mother noticing the stillness called out to him reminding him to be careful near the water but her voice was soft and full of warmth the evening began to fall and the beach once bustling with families grew quieter with only the sound of distant seagulls and the rhythm of the waves breaking the silence the child ran back to his parents eager to tell them about the magical moment he had just experienced while his father wrapped him in a towel wiping off the last traces of saltwater from his skin the day had been perfect a memory they would all cherish forever and as they packed up their things and walked back to the car the last rays of the sun bathed them in a golden glow marking the end of a beautiful day spent together.",
+    "in the small town the streets were lined with charming houses each with its own unique character from brightly colored shutters to neatly trimmed gardens full of blooming flowers children rode their bikes down the sidewalk waving to their neighbors as they passed by while the smell of freshly baked bread wafted from the local bakery tempting anyone walking by to stop and buy a loaf the local diner was busy with families gathered inside for lunch their chatter filling the air as the clinking of silverware on plates created a rhythmic sound that was as familiar as the changing of the seasons the day was warm with just a hint of breeze rustling the leaves in the trees making it feel like the perfect time to be outside the small park in the center of town was a hub of activity with children playing on the swings couples sitting on benches and joggers making their way around the path that circled the park the air was filled with the sounds of laughter footsteps and the occasional bark of a dog as it chased after a stick thrown by its owner the town had a peaceful almost timeless quality to it where everyone knew each other's names and there was a sense of belonging that made you feel like you were part of something bigger it was the kind of place where nothing ever felt rushed where life moved at a slower more relaxed pace and where people took the time to appreciate the simple pleasures that made life so wonderful and as the sun began to set casting a soft orange glow over the town the streets grew quieter and the day transitioned into evening with the sound of crickets beginning to fill the air signaling that another day was coming to a close.",
+    "the sky was a deep shade of blue as the first stars began to twinkle in the evening the moon hung high above casting a soft glow on the quiet town below in the distance the sound of an owl hooting echoed through the trees adding to the peaceful atmosphere the streetlights flickered on one by one illuminating the empty roads as the town settled into the calm of the night inside the houses families gathered together to share dinner their voices low as they talked about their day and plans for the future in one home a mother tucked her children into bed reading them a bedtime story before kissing them goodnight and turning off the light in another an elderly couple sat on the porch enjoying the cool breeze and the sight of the stars above content in each other's company the world outside felt still as if time itself had slowed down allowing everyone to enjoy the moment the night was full of possibilities and the quiet beauty of the world seemed to invite peaceful reflection it was a time for rest and renewal a moment to recharge before the world would begin again the next day as the night deepened the sounds of the town faded leaving only the whisper of the wind through the trees and the distant hum of crickets creating a soothing symphony that marked the end of another peaceful day.",
+    "the morning mist hung low over the fields wrapping the landscape in a soft ethereal veil that made everything look dreamlike the sun had just begun to rise casting a pale golden light over the dew covered grass which sparkled like tiny diamonds in the early light the air was crisp and fresh and the scent of earth and grass filled the lungs with each breath the only sound was the occasional chirp of a bird signaling the start of another day in the distance a farmer could be seen walking across the field his silhouette dark against the rising sun carrying a basket filled with freshly picked vegetables the village was still asleep its streets empty and quiet but the promise of the day ahead was already in the air the mist began to lift as the sun rose higher revealing the beauty of the countryside in all its glory the trees stood tall and proud their branches swaying gently in the breeze while the river flowed lazily through the valley its surface reflecting the sky above the scene was peaceful and serene a perfect start to the day where everything felt calm and still as if the world itself was holding its breath waiting for something magical to happen."
+  ],
+  medium: [
+    "As the sun dipped below the horizon, casting an amber glow across the tranquil lake, a gentle breeze stirred the surface, creating ripples that danced in the fading light, while birds chirped softly in the distance, their melodies mingling with the rustling leaves of the nearby oak trees; children, laughing and squealing, raced along the shore, their feet kicking up tiny clouds of sand as they played a game of tag under the watchful eyes of their parents, who sat on picnic blankets spread across the soft grass, sipping coffee from thermoses and sharing stories of childhood memories that seemed as vivid and alive as the scenes unfolding before them, and one boy, no older than seven, held up a shiny, silver coin he had found buried in the sand, exclaiming with glee, \"Look what I found! It\’s from 1997!\" as the others gathered around him, their faces glowing with curiosity and wonder, and an older man, perhaps a grandfather, smiled knowingly and began to tell a tale about how he used to collect coins as a boy, his voice filled with nostalgia and warmth, captivating the children, who listened with rapt attention as if the story were a secret treasure unearthed from the sands of time itself, and as the sky darkened, stars began to appear one by one, twinkling like diamonds scattered across an endless expanse, and someone started a small campfire, its crackling flames illuminating faces with a golden hue, while marshmallows skewered on sticks turned golden-brown over the heat, the sugary aroma filling the cool evening air as laughter and conversation continued, unbroken by the passage of time, which seemed to slow down and stretch out, allowing every precious moment to linger just a little longer in the memories of those gathered around the flickering fire.",
+    "The city was alive with the sound of traffic, as people hurried to and fro, their footsteps quick and purposeful, navigating the crowded streets. The skyline rose high above them, its gleaming glass towers reflecting the early morning sun, while the hum of cars and buses filled the air. On the sidewalks, people hurried past street vendors selling everything from hot dogs to freshly brewed coffee, the aroma of which mingled with the exhaust fumes from the cars. The energy of the city was palpable—a constant buzz of activity that never seemed to stop. In the cafes and restaurants, people sat at tables sipping their drinks and chatting with friends, while others worked on laptops or read newspapers. The sounds of conversation, clinking cups, and the occasional laughter created a lively social atmosphere that was unique to city life. The streets were a mosaic of people, each with their own story, their own purpose, all moving together in a shared rhythm. As the day wore on, the city seemed to become even more vibrant, with the streets becoming more crowded and the energy intensifying. In the parks, people took a break from the hustle and bustle, enjoying a moment of peace amidst the chaos. Joggers ran along the paths, their feet pounding the pavement, while families gathered on benches, chatting and enjoying the warmth of the sun. The city was a place where everyone belonged, a place that was constantly evolving yet always familiar, offering something for everyone, no matter who you were or where you came from.",
+    "The storm had been brewing for hours. The sky growing darker with each passing minute as the wind began to pick up, the trees swaying in the breeze, their branches creaking as the first raindrops began to fall, quickly turning into a torrential downpour. Lightning flashed across the sky, illuminating the dark clouds, while the thunder rumbled in the distance, like the growl of some great beast. The streets, once dry, quickly became flooded with water, turning the neighborhood into a small river. As the rain fell harder and harder, people scrambled to find shelter, huddling under doorways, umbrellas, and awnings, their clothes soaked through in seconds. The storm was fierce, relentless, and it seemed like it would never end. But despite the chaos outside, inside the homes, there was a sense of calm. A refuge from the storm. Families gathered together, sharing stories and laughter as the rain hammered against the windows. The power flickered a few times but it never went out completely. Outside, the storm raged on, but inside there was warmth, comfort, and safety—a reminder of how fragile and precious life could be. After what seemed like an eternity, the storm finally began to subside, the rain easing to a light drizzle, and the sky slowly clearing. The streets, now flooded, began to drain, leaving behind a calm, wet landscape, the smell of rain lingering in the air, and the promise of a fresh start.",
+    "The laboratory was filled with an eerie silence broken only by the occasional clink of metal against glass as the researchers continued their work with a singular focus that seemed almost obsessive their white coats spotless and their eyes fixed on the task before them a series of complicated equations written on the chalkboard in front of them some with numbers that stretched into infinity others adorned with strange symbols that were not part of any known alphabet their pencils hovered above their notepads moving with precision as if guided by some unseen force and amid all this a single red button sat on the table its surface gleaming and smooth an object so innocuous yet so filled with potential danger that it seemed to radiate an almost magnetic pull as though it held the power to change the course of history itself and just as one of the researchers reached out to press it the door swung open with a sudden gust of wind and a tall figure entered the room his presence instantly shifting the atmosphere the sound of his footsteps amplified by the tense silence that followed.",
+    "The machine whirred to life with a mechanical hum as it slowly began to unfold its metal arms from within its chamber like the joints of some great beast awakening from slumber its metallic skin gleaming under the fluorescent lights of the lab the researchers observed in awe as it continued to assemble itself piece by piece each motion calculated and deliberate as if following a script written by a mind far more advanced than their own the machine's eyes blinked on with a faint blue glow its sensors scanning the room with precision as it calculated distances and angles in a manner that seemed almost too human for comfort one researcher stepped forward hesitantly but with determination holding a tablet in her hand displaying a series of complex graphs and numbers that seemed to shift and change with every passing second as the machine assessed them with its cold mechanical gaze and then without warning it spoke a single word in a voice so deep and resonant that it reverberated through the walls a word that caused all the researchers to freeze in place their blood running cold with realization as the implications of its utterance settled in their minds and the word"
+     ] ,
+    hard: [
+    "As the group gathered in the dimly lit room, a sense of unease began to settle over them. The air felt heavy, thick with tension, as if something was about to happen that none of them were prepared for. The table at the center of the room was covered with papers, strange symbols, and old books, some with frayed edges, others with pages yellowed with age. A man in a black suit stood at the head of the table, his face obscured by shadows. He cleared his throat before speaking, his voice low and gravelly as he addressed the group. 'We have reason to believe that what you are about to uncover could change everything we know about reality,' he said, his eyes scanning the room. 'This is no ordinary mission. There are forces at work here that you cannot begin to comprehend.' His words were punctuated by the flicker of the overhead lights, and for a moment, it seemed as if the room itself was holding its breath. The man continued, 'The task at hand is simple, in theory. You must locate the artifact, but be warned, it is not without its dangers. It is protected by codes, traps, and perhaps something even darker.' A chill ran down the spines of those present as the man paused, then added, 'I trust you understand the consequences of failure.' The words seemed to hang in the air, their weight heavier than any physical object. The group exchanged nervous glances before nodding in agreement, each of them aware of the gravity of the mission they were about to embark on, a mission that could very well be their last.",
+    "The old mansion stood at the edge of the cliff, its dark silhouette against the stormy sky casting a foreboding shadow over the landscape. Lightning flashed across the sky, illuminating the towering structure for just a moment, and the wind howled through the trees, rattling the windows of the house. Inside, a group of researchers had gathered, their faces tense as they huddled around a large wooden table, poring over ancient manuscripts filled with cryptic symbols and bizarre equations. One of them, a woman in her mid-thirties, pointed to a page in the book, her finger trembling as she traced the symbols. 'These numbers,' she said, 'they match the coordinates we found last year, the ones that lead to the island. If we follow this, we may find the key to unlocking the mystery.' A man in his late forties, dressed in a lab coat, looked at her skeptically. 'But these symbols are more than just numbers,' he said. 'They're a code, a warning. We may be dealing with something far more dangerous than we thought.' As the wind howled outside, the group fell silent, each of them contemplating the gravity of the situation. They knew that uncovering the truth behind the artifact would not be easy, and that it could have catastrophic consequences if they failed. The pages turned slowly as they continued their work, each piece of the puzzle revealing something darker and more terrifying than the last.",
+    "The clock ticked loudly in the silence of the room, its hands creeping ever closer to midnight. The group gathered around the table, their faces pale with anticipation. On the table in front of them lay a series of encrypted messages, their contents more cryptic and disturbing with each passing moment. They had been working for hours, decoding the symbols, but each time they thought they were on the verge of a breakthrough, they were met with dead ends, false leads, and the overwhelming sense that someone—or something—was watching them. Suddenly, one of the researchers let out a gasp as the computer screen flickered to life, displaying a string of numbers and characters that none of them had seen before. 'This is it,' the researcher whispered, 'this is the code.' The others crowded around the screen, their eyes wide with disbelief as they watched the message unfold: 'E=mc² - π ≈ 3.14159 - [51.5074° N, 0.1278° W]' The coordinates were exact. The numbers were precise. And yet, the message made no sense. 'What does this mean?' one of them asked, but no one had an answer. As they stared at the screen, a cold wind blew through the room, and the sound of the clock ticking grew louder. The answer to their puzzle was within reach, but they knew that unlocking it would come with a cost. The question was—were they prepared to pay it?",
+    "The air in the underground facility was thick with tension as the team gathered around the large table, each of them staring at the cryptic map that lay before them. The map was old, its edges torn and faded, but the symbols on it were unmistakable—a series of numbers, letters, and coordinates that led to a location deep within the heart of the jungle. A man in his fifties, his face lined with age and wisdom, traced a finger along the map, his eyes scanning the symbols with practiced precision. 'This is it,' he said, his voice steady. 'This is the location we've been searching for.' Another member of the team, a young woman in her twenties, looked at him skeptically. 'But what does it mean?' she asked. 'What is this place?' The man paused, then answered in a low voice. 'It\’s a place that doesn\’t exist... at least, not in the way you think. There are forces at work here that defy logic, defy reason.' The room fell silent, the weight of his words sinking in. Outside, the wind howled through the trees, and the sounds of distant animals echoed in the jungle. They were about to embark on a journey into the unknown, a journey that would test their resolve and their very understanding of reality itself."
+  ]
+    };
+    let currentText = "";
+    let typedText = "";
+    let typedCharacters = 0;
+    let timerRunning = false;
+
+    function generateText() {
+      const difficulty = document.getElementById("difficulty").value;
+      const sentences = difficultySentences[difficulty];
+      currentText = sentences[Math.floor(Math.random() * sentences.length)];
+      typedText = "";
+      renderText();
+    }
+
+    function handleTyping(event) {
+  if (!timerRunning) return;
+  const key = event.key;
+
+  if (key === "Backspace") {
+    // Remove the last character from the typedText
+    typedText = typedText.slice(0, -1);
+  } else if (key.length === 1) {
+    // Add the typed character to the typedText
+    typedText += key;
+  }
+  renderText();
+}
+
+function renderText() {
+  let outputHTML = "";
+  for (let i = 0; i < currentText.length; i++) {
+    if (i < typedText.length) {
+      if (typedText[i] === currentText[i]) {
+        outputHTML += `<span class="correct">${currentText[i]}</span>`;
+      } else {
+        outputHTML += `<span class="incorrect">${currentText[i]}</span>`;
+      }
+    } else {
+      if (i === typedText.length) {
+        outputHTML += `<span class="cursor"></span>`;
+      }
+      outputHTML += `<span>${currentText[i]}</span>`;
+    }
+  }
+  displayTextElement.innerHTML = outputHTML;
+
+  // Automatically scroll the container as needed
+  const textWrapper = document.getElementById("textWrapper");
+  const cursor = document.querySelector(".cursor");
+  if (cursor) {
+    cursor.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+}
+
+
+    function startTypingTest() {
+      const duration = parseInt(document.getElementById("duration").value, 10);
+      timerRunning = true;
+      startTimer(duration);
+      startButton.style.display = "none";
+      displayTextElement.focus();
+    }
+
+    function startTimer(duration) {
+      let remainingTime = duration;
+      const timerElement = document.getElementById("timer");
+      const countdown = setInterval(() => {
+        if (!timerRunning) {
+          clearInterval(countdown);
+          return;
+        }
+        remainingTime--;
+        timerElement.textContent = `Time: ${remainingTime}s`;
+        if (remainingTime <= 0) {
+          clearInterval(countdown);
+          endTypingTest();
+        }
+      }, 1000);
+    }
+
+    function endTypingTest() {
+  timerRunning = false;
+
+  // Calculate metrics
+  const wordsTyped = typedText.trim().split(/\s+/).length;
+  const timeTaken = parseInt(document.getElementById("duration").value, 10);
+  const wpm = Math.round((wordsTyped / timeTaken) * 60);
+
+  let correctChars = 0;
+  let incorrectChars = 0;
+
+  for (let i = 0; i < typedText.length; i++) {
+    if (typedText[i] === currentText[i]) {
+      correctChars++;
+    } else {
+      incorrectChars++;
+    }
+  }
+
+  const accuracy = Math.round((correctChars / currentText.length) * 100);
+
+  // Store results in localStorage
+  localStorage.setItem(
+    "typingTestResults",
+    JSON.stringify({
+      wpm: wpm,
+      accuracy: accuracy,
+      errors: incorrectChars,
+      totalChars: currentText.length,
+      correctChars: correctChars,
+    })
+  );
+
+  // Redirect to result.html
+  window.location.href = "result.html";
+}
+
+
+    function resetTest() {
+      startButton.style.display = "inline-block";
+      timerRunning = false;
+      typedText = "";
+      generateText();
+    }
+
+    displayTextElement.addEventListener("keydown", handleTyping);
+    window.onload = generateText;
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-theme");
+    }
+    
+ 
+  </script>
+</body>
+</html>
