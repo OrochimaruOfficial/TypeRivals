@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="index.html" class="navbar-brand">TypeRivals</a>
+    <ul class="nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="leaderboard.html" class="active">Leaderboard</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+      <li><a href="login.html" class="nav-link">Login</a></li>
+    </ul>
+    <button class="btn-toggle-theme" onclick="toggleTheme()">&#9790;</button>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Leaderboard</h1>
+    <p>Check out the top performers!</p>
+  </section>
+
+  <!-- Leaderboard Table -->
+  <section class="section section-boundary">
+    <h2 class="section-title">Top Players</h2>
+    <div class="leaderboard-container">
+      <table class="leaderboard">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Username</th>
+            <th>WPM</th>
+            <th>Accuracy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Speedster123</td>
+            <td>120</td>
+            <td>98%</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>TypingPro</td>
+            <td>115</td>
+            <td>96%</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Keymaster</td>
+            <td>110</td>
+            <td>94%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2024 MyWebsite. All rights reserved.
+  </footer>
+
+  <script>
+    // Dark/Light Theme Toggle Function
+    function toggleTheme() {
+      document.body.classList.toggle('dark-theme');
+    }
+   
+  </script>
+</body>
+</html>

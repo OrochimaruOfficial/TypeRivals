@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Test Results</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* General styles */
+    body {
+      background: #fff; /* Fresh white background */
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.8;
+    }
+
+    /* Results container */
+    .results {
+      text-align: center;
+      background-color: #ffffff;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      width: 90%;
+      margin: 20px 0;
+      margin-right: 150px;
+    }
+
+    .results h1 {
+      font-size: 2rem;
+      color: #4a4e69;
+      margin-bottom: 10px;
+    }
+
+    .results p {
+      font-size: 1.2rem;
+      margin: 8px 0;
+    }
+
+    /* Chart container */
+    .chart-container {
+      width: 80%;
+      max-width: 500px;
+      margin-top: 40px;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Button styles */
+    .actions {
+      margin-top: 40px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      margin: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .btn.secondary {
+      background-color: #6c757d;
+    }
+
+    .btn.secondary:hover {
+      background-color: #495057;
+    }
+    /* Navbar */
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #2c3e50;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  flex: 1; /* Ensures the brand stays on the left */
+}
+
+.nav {
+  list-style: none;
+  display: flex;
+  gap: 2rem; /* Space between nav items */
+  margin: 0 auto; /* Center the nav links */
+  padding: 0;
+  flex: 2; /* Pushes the nav links to the center */
+  justify-content: center;
+}
+
+.nav li {
+  display: inline;
+}
+
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+  padding: 0.5rem 1rem;
+}
+
+.nav a:hover {
+  color: #1abc9c; /* Highlight on hover */
+}
+
+.btn-toggle-theme {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  outline: none;
+  flex: 1; /* Ensures the button stays on the right */
+  text-align: right;
+}
+
+.btn-toggle-theme:hover {
+  color: #16a085;
+}
+
+
+  #centre {
+    
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height:fit-content; /* Full viewport height */
+  margin: 0px auto;
+  
+  
+  /* background: linear-gradient(to bottom right, #1abc9c, #3498db); */
+  background: #fff;
+}
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 4rem 10rem;
+    background: linear-gradient(to bottom right, #1abc9c, #3498db);
+  }
+  
+  .feature-card {
+    padding: 2rem;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .feature-card h3 {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+  }
+  
+  .feature-card p {
+    color: #555;
+  }
+  
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 2rem 0;
+    background: #2c3e50;
+    color: #fff;
+    margin-top: 2rem;
+  }
+  .hero {
+    text-align: center;
+    background: linear-gradient(to bottom right, #1abc9c, #3498db);
+    color: #fff;
+    padding: 4rem 2rem;
+  }
+  .actions{
+    justify-content: center;
+    text-align: center;
+    background: #fff;
+  }
+  
+  /* Dark Theme Styles */
+  body.dark-theme {
+    background: #fff;
+    color: #e0e0e0;
+  }
+  body.dark-theme .btn-toggle-theme {
+    color: #16a085;
+  }
+    
+
+  .dark-theme .navbar {
+    background: #1e1e1e;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  }
+
+  .dark-theme .navbar a,
+  .dark-theme .navbar .btn-toggle-theme {
+    color: #e0e0e0;
+  }
+
+  .dark-theme .navbar a:hover {
+    color: #1abc9c;
+  }
+  .dark-theme .features{
+    background: linear-gradient(to bottom right, #0f9d58, #065f46);
+  }
+  .dark-theme .results,
+  .dark-theme .chart-container,
+  .dark-theme .feature-card {
+    background: #1e1e1e;
+    color: #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  .dark-theme .results h1,
+  .dark-theme .feature-card h3 {
+    color: #ffffff;
+  }
+
+  .dark-theme .btn {
+    background-color: #1abc9c;
+    color: #ffffff;
+  }
+
+  .dark-theme .btn:hover {
+    background-color: #16a085;
+  }
+
+  .dark-theme .btn.secondary {
+    background-color: #34495e;
+  }
+
+  .dark-theme .btn.secondary:hover {
+    background-color: #2c3e50;
+  }
+
+  .dark-theme footer {
+    background: #1e1e1e;
+    color: #e0e0e0;
+  }
+
+  .dark-theme .hero {
+    background: linear-gradient(to bottom right, #0f9d58, #065f46);
+    color: #ffffff;
+  }
+  /* Ensure alignment for toggle button */
+   /* .btn-toggle-theme {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    outline: none;
+    margin-left: auto; 
+  }   */
+  
+  /* .btn-toggle-theme:hover {
+    color: #16a085;
+  }  */
+
+
+  
+
+
+  </style>
+</head>
+<body>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+  
+    const firebaseConfig = {
+      apiKey: "AIzaSyAv3G0dZo9wiK30joxt6d6lFr1XNo-e6x0",
+      authDomain: "typerivals-a55e5.firebaseapp.com",
+      projectId: "typerivals-a55e5",
+      storageBucket: "typerivals-a55e5.appspot.com",
+      messagingSenderId: "277969702382",
+      appId: "1:277969702382:web:cf9eeff47ee9c2a8f612ff",
+      measurementId: "G-7CN477QTKM",
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+  
+    const saveResultsToDatabase = async (results) => {
+      const user = auth.currentUser;
+  
+      if (user) {
+        const userDocRef = doc(db, "users", user.uid);
+  
+        // Add results to Firestore
+        try {
+          await updateDoc(userDocRef, {
+            history: arrayUnion({
+              date: new Date().toISOString(),
+              wpm: results.wpm,
+              accuracy: results.accuracy,
+              errors: results.errors,
+            }),
+          });
+          console.log("Results saved to Firestore!");
+        } catch (error) {
+          console.error("Error saving results:", error);
+        }
+      }
+    };
+  
+    // Wait for authentication
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const results = JSON.parse(localStorage.getItem("typingTestResults")) || {
+          wpm: 0,
+          accuracy: 0,
+          errors: 0,
+        };
+  
+        // Save results
+        await saveResultsToDatabase(results);
+      } else {
+        console.error("User not logged in!");
+      }
+    });
+  </script>
+  
+   <!-- Navbar -->
+   <nav class="navbar">
+    <a href="index.html" class="navbar-brand">TypeRivals</a>
+    <ul class="nav">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="leaderboard.html">Leaderboard</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="contest.html" class="active">Contest</a></li>
+    </ul>
+    <button class="btn-toggle-theme" onclick="toggleTheme()">&#9790;</button>
+  </nav>
+
+  <!-- Hero Section -->
+<section class="hero">
+  <h1>Your Typing Results</h1>
+  <p>Discover how well you performed and see areas for improvement.</p>
+</section>
+
+
+<div id="centre">
+  <div class="results" style="">
+    <h1>Typing Test Results</h1>
+    <p id="wpm"></p>
+    <p id="accuracy"></p>
+    <p id="errors"></p>
+  </div>
+
+  <div class="chart-container">
+    <canvas id="chart"></canvas>
+  </div>
+</div>
+  <div class="actions">
+    <a href="contest.html" class="btn">Take Another Test</a>
+    <a href="leaderboard.html" class="btn secondary">View Leaderboard</a>
+  </div>
+
+  
+<!-- Share Results Section -->
+<section class="features">
+  <div class="feature-card">
+    <h3>Share Your Achievement</h3>
+    <p>Let your friends know how great you are at typing!</p>
+    <div class="social-buttons">
+  <button class="btn btn-primary" onclick="shareOnFacebook()">Share on Facebook</button>
+  <button class="btn btn-primary" onclick="shareOnTwitter()">Share on Twitter</button>
+  <button class="btn btn-primary" onclick="copyResults()">Copy Results</button>
+</div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer style="margin-top: 0rem;">
+  &copy; 2024 TypeRivals. All rights reserved.
+</footer>
+  <script>
+    // Fetch results from localStorage
+    const results = JSON.parse(localStorage.getItem("typingTestResults")) || {
+      wpm: 0,
+      accuracy: 0,
+      errors: 0,
+      correctChars: 0,
+    };
+
+    // Display results
+    document.getElementById("wpm").textContent = `Words Per Minute: ${results.wpm}`;
+    document.getElementById("accuracy").textContent = `Accuracy: ${results.accuracy}%`;
+    document.getElementById("errors").textContent = `Errors: ${results.errors}`;
+
+    // Create a graph
+    const ctx = document.getElementById("chart").getContext("2d");
+    const data = {
+      labels: ["Correct Characters", "Errors"],
+      datasets: [
+        {
+          data: [results.correctChars, results.errors],
+          backgroundColor: ["#4caf50", "#f44336"],
+          borderWidth: 0,
+        },
+      ],
+    };
+    const config = {
+      type: "pie",
+      data: data,
+      options: {
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              font: {
+                size: 14,
+              },
+            },
+          },
+        },
+      },
+    };
+    new Chart(ctx, config);
+
+    
+    function toggleTheme() {
+    document.body.classList.toggle("dark-theme");
+  }
+  
+
+  </script>
+</body>
+</html>

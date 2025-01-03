@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  
+</head>
+<body>
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="index.html" class="navbar-brand">TypeRivals</a>
+    <ul class="nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="leaderboard.html" class="nav-link">Leaderboard</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+    </ul>
+    <button class="btn-toggle-theme" onclick="toggleTheme()">&#9790;</button>
+  </div>
+
+  <!-- Login Section -->
+  <section class="login-section section">
+    <div class="login-container">
+      <form class="login-form" id="loginForm">
+        <h1>Login</h1>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="btn-primary">Login</button>
+        <div class="additional-links">
+          <a href="forgot-password.html">Forgot Password?</a> | <a href="register.html">Create an Account</a>
+        </div>
+      </form>
+      <p>Or</p>
+      <!-- Google Sign-In Button (outside the form) -->
+      <div class="google-signin-container">
+        <button id="googleSignInBtn" class="btn-google">
+          <img src="https://th.bing.com/th/id/R.0fa3fe04edf6c0202970f2088edea9e7?rik=joOK76LOMJlBPw&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fgoogle-logo-png-open-2000.png&ehk=0PJJlqaIxYmJ9eOIp9mYVPA4KwkGo5Zob552JPltDMw%3d&risl=&pid=ImgRaw&r=0" alt="Google logo" />
+          Sign in with Google
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2024 MyWebsite. All rights reserved.
+  </footer>
+
+  <!-- Firebase Scripts -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      signOut,
+      GoogleAuthProvider,
+      signInWithPopup,
+    } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAv3G0dZo9wiK30joxt6d6lFr1XNo-e6x0",
+      authDomain: "typerivals-a55e5.firebaseapp.com",
+      projectId: "typerivals-a55e5",
+      storageBucket: "typerivals-a55e5.appspot.com",
+      messagingSenderId: "277969702382",
+      appId: "1:277969702382:web:cf9eeff47ee9c2a8f612ff",
+      measurementId: "G-7CN477QTKM",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Login Form Submission
+    const loginForm = document.getElementById("loginForm");
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert("Login successful! Redirecting to contest...");
+        window.location.href = "contest.html";
+      } catch (error) {
+        console.error("Login failed:", error);
+        alert("Login failed. Please check your credentials and try again.");
+      }
+    });
+
+    // Google Sign-In
+    const googleSignInBtn = document.getElementById("googleSignInBtn");
+    googleSignInBtn.addEventListener("click", async () => {
+      const provider = new GoogleAuthProvider();
+      try {
+        const result = await signInWithPopup(auth, provider);
+        alert(`Welcome, ${result.user.displayName}! Redirecting to Contest...`);
+        window.location.href = "contest.html";
+      } catch (error) {
+        console.error("Google Sign-In failed:", error);
+        alert("Google Sign-In failed. Please try again.");
+      }
+    });
+
+    // Dark Theme Toggle
+    function toggleTheme() {
+      document.body.classList.toggle("dark-theme");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const theme = localStorage.getItem("theme");
+      if (theme === "dark") {
+        document.body.classList.add("dark-theme");
+      }
+    });
+
+    document.querySelector(".btn-toggle-theme").addEventListener("click", () => {
+      const isDark = document.body.classList.toggle("dark-theme");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    });
+  </script>
+</body>
+</html>

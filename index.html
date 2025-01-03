@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Speed Test</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+  <style>
+
+
+/* User icon container */
+.user-icon-container {
+  position: relative;
+  cursor: pointer;
+}
+
+/* User icon */
+.user-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #555;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  color: white;
+  text-transform: uppercase;
+  margin-right: 10px;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  z-index: 1000;
+  padding: 10px 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Show dropdown menu */
+.dropdown-menu.active {
+  display:block;
+  padding: 10px;
+    width: min-content;
+}
+
+/* Dropdown menu list */
+.dropdown-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Dropdown menu items */
+.dropdown-menu li {
+  padding: 10px 20px;
+  font-size: 14px;
+  color: #333;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Username styling */
+.dropdown-menu li.username {
+  font-weight: bold;
+  font-size: 16px;
+  color: #555;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 5px;
+}
+
+/* Hover effect */
+.dropdown-menu li:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+/* Logout button styling */
+.dropdown-menu li.logout {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+.dropdown-menu li.logout:hover {
+  background-color: #f5f5f5;
+  color: #c9302c;
+}
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="#" class="navbar-brand">TypeRivals</a>
+  <ul class="nav">
+    <li><a href="#about" class="nav-link">About Us</a></li>
+    <li><a href="#features" class="nav-link">Features</a></li>
+    <li><a href="#contact" class="nav-link">Contact</a></li>
+    <li><a href="leaderboard.html" class="nav-link">Leaderboard</a></li>
+    <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+    <!-- <li><a href="contest.html" class="nav-link">Contest</a></li> -->
+    <li><a href="login.html" class="nav-link">Login</a></li>
+    <div class="user-icon-container" id="userIconContainer">
+      <div class="user-icon" id="userIcon"></div>
+      <div class="dropdown-menu" id="dropdownMenu">
+        <ul>
+          <li id="usernameDisplay">Username</li>
+          <li id="goToProfile">Go to Profile</li>
+          <li id="logout">Logout</li>
+        </ul>
+      </div>
+    </div>
+  </ul>
+  <button class="btn-toggle-theme" onclick="toggleTheme()">🌙</button>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+  <h1 class="fade-in">Enhance Your Typing Skills</h1>
+  <p class="fade-in">Join our platform to test, improve, and compete with others. Discover your true typing potential!</p>
+  <a href="login.html" class="btn btn-primary fade-in">Get Started</a>
+</section>
+
+<section id="about" class="about section">
+
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>About</h2>
+    <p>Who we are</p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+
+    <div class="row gy-4">
+
+      <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="100">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+          dolore
+          magna aliqua.
+        </p>
+        <ul>
+          <li><i class="bi bi-check2-circle"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo
+              consequat.</span></li>
+          <li><i class="bi bi-check2-circle"></i> <span>Duis aute irure dolor in reprehenderit in voluptate
+              velit.</span></li>
+          <li><i class="bi bi-check2-circle"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo</span></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+        <p>Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+          voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+          proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
+        
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+ 
+<!-- Features Section -->
+<section id="features" class="features">
+  <div class="feature-card fade-in">
+    <h3>Typing Contests</h3>
+    <p>Compete with others in exciting typing speed contests.</p>
+  </div>
+  <div class="feature-card fade-in">
+    <h3>Leaderboard</h3>
+    <p>See how you rank among friends and global users.</p>
+  </div>
+  <div class="feature-card fade-in">
+    <h3>Personalized Feedback</h3>
+    <p>Get detailed mistake analysis and typing improvement tips.</p>
+  </div>
+</section>
+
+<section id="contact" class="contact section">
+
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Contact</h2>
+    <p>Contact Us</p>
+  </div><!-- End Section Title -->
+
+  <div class="container" data-aos="fade" data-aos-delay="100">
+
+    <div class="row gy-4">
+
+      <div class="col-lg-4">
+        <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
+          <i class="bi bi-geo-alt flex-shrink-0"></i>
+          <div>
+            <h3>Address</h3>
+            <p>A108 Adam Street, New York, NY 535022</p>
+          </div>
+        </div><!-- End Info Item -->
+
+        <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
+          <i class="bi bi-telephone flex-shrink-0"></i>
+          <div>
+            <h3>Call Us</h3>
+            <p>+1 5589 55488 55</p>
+          </div>
+        </div><!-- End Info Item -->
+
+        <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
+          <i class="bi bi-envelope flex-shrink-0"></i>
+          <div>
+            <h3>Email Us</h3>
+            <p>info@example.com</p>
+          </div>
+        </div><!-- End Info Item -->
+
+      </div>
+
+      <div class="col-lg-8">
+        <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up"
+          data-aos-delay="200">
+          <div class="row gy-4">
+
+            <div class="col-md-6">
+              <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
+            </div>
+
+            <div class="col-md-6 ">
+              <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
+            </div>
+
+            <div class="col-md-12">
+              <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
+            </div>
+
+            <div class="col-md-12">
+              <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+            </div>
+
+           
+
+          </div>
+        </form>
+      </div><!-- End Contact Form -->
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- Footer -->
+<footer>
+  &copy; 2024 TypingPro | All Rights Reserved
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script type="module">
+  function toggleTheme() {
+    document.body.classList.toggle('dark-theme');
+    document.querySelector('.navbar').classList.toggle('dark-theme');
+    document.querySelectorAll('.feature-card').forEach(card => card.classList.toggle('dark-theme'));
+  }
+
+ 
+    // Import Firebase modules
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAv3G0dZo9wiK30joxt6d6lFr1XNo-e6x0",
+  authDomain: "typerivals-a55e5.firebaseapp.com",
+  projectId: "typerivals-a55e5",
+  storageBucket: "typerivals-a55e5.appspot.com",
+  messagingSenderId: "277969702382",
+  appId: "1:277969702382:web:cf9eeff47ee9c2a8f612ff",
+  measurementId: "G-7CN477QTKM",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// DOM Elements
+const userIcon = document.getElementById("userIcon");
+const dropdownMenu = document.getElementById("dropdownMenu");
+const usernameDisplay = document.getElementById("usernameDisplay");
+const goToProfile = document.getElementById("goToProfile");
+const logout = document.getElementById("logout");
+
+// Toggle dropdown menu visibility
+userIcon.addEventListener("click", () => {
+  dropdownMenu.classList.toggle("active");
+});
+
+// Check user authentication status
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // If logged in, display user info
+    userIcon.textContent = user.displayName ? user.displayName[0].toUpperCase() : "U";
+    usernameDisplay.textContent = user.displayName || "Unknown User";
+    goToProfile.style.display = "block";
+    logout.style.display = "block";
+  } else {
+    // If not logged in, show guest view
+    userIcon.textContent = "G";
+    usernameDisplay.textContent = "Guest";
+    goToProfile.style.display = "none";
+    logout.style.display = "none";
+
+    // Add login option for guests
+    const loginOption = document.createElement("li");
+    loginOption.textContent = "Login / Sign Up";
+    loginOption.style.cursor = "pointer";
+    loginOption.addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+    dropdownMenu.querySelector("ul").appendChild(loginOption);
+  }
+});
+
+// Go to profile functionality
+goToProfile.addEventListener("click", () => {
+  window.location.href = "dashboard.html";
+});
+
+// Logout functionality
+logout.addEventListener("click", () => {
+  signOut(auth)
+    .then(() => {
+      alert("You have been logged out.");
+      window.location.href = "login.html";
+    })
+    .catch((error) => {
+      console.error("Error logging out:", error);
+      alert("An error occurred while logging out. Please try again.");
+    });
+});
+
+</script>
+</body>
+</html>

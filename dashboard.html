@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="index.html" class="navbar-brand">TypeRivals</a>
+    <ul class="nav">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="index.html#leaderboard">Leaderboard</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="dashboard.html" class="active">Dashboard</a></li>
+      <li><a href="login.html" class="nav-link">Login</a></li>
+    </ul>
+    <button class="btn-toggle-theme" onclick="toggleTheme()">&#9790;</button>
+  </div>
+
+  <!-- Profile Section -->
+  <section id="profile" class="section section-boundary">
+    <h2 class="section-title">My Profile</h2>
+    <div class="profile-container">
+      <div class="profile-info">
+        <img
+          src="https://static.vecteezy.com/system/resources/previews/018/765/757/original/user-profile-icon-in-flat-style-member-avatar-illustration-on-isolated-background-human-permission-sign-business-concept-vector.jpg"
+          alt="User Image" class="profile-image" id="profileImage">
+        <h3 id="username">Username: Loading...</h3>
+        <p id="email">Email: Loading...</p>
+        <p id="registrationDate">Registered on: Loading...</p>
+      </div>
+      <div class="profile-stats">
+        <h4>Statistics</h4>
+        <p id="wpm">WPM: Loading...</p>
+        <p id="accuracy">Accuracy: Loading...</p>
+        <p id="totalActivities">Total Activities: Loading...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- History Section -->
+  <section id="history" class="section section-boundary">
+    <h2 class="section-title">My Activity History</h2>
+    <div class="history-container">
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Activity</th>
+            <th>WPM</th>
+            <th>Accuracy</th>
+          </tr>
+        </thead>
+        <tbody id="historyTable">
+          <!-- Activity history will be populated here -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2024 TypeRivals. All rights reserved.
+  </footer>
+
+  <!-- Firebase Integration -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAv3G0dZo9wiK30joxt6d6lFr1XNo-e6x0",
+      authDomain: "typerivals-a55e5.firebaseapp.com",
+      projectId: "typerivals-a55e5",
+      storageBucket: "typerivals-a55e5.appspot.com",
+      messagingSenderId: "277969702382",
+      appId: "1:277969702382:web:cf9eeff47ee9c2a8f612ff",
+      measurementId: "G-7CN477QTKM",
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // DOM Elements
+    const usernameElem = document.getElementById("username");
+    const emailElem = document.getElementById("email");
+    const registrationDateElem = document.getElementById("registrationDate");
+    const wpmElem = document.getElementById("wpm");
+    const accuracyElem = document.getElementById("accuracy");
+    const totalActivitiesElem = document.getElementById("totalActivities");
+    const historyTable = document.getElementById("historyTable");
+
+    const fetchUserData = async (userId) => {
+  try {
+    // Fetch user profile data
+    const userDocRef = doc(db, "users", userId);
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+
+      // Update DOM elements with fetched data
+      usernameElem.textContent = `Username: ${userData.username}`;
+      emailElem.textContent = `Email: ${userData.email}`;
+      registrationDateElem.textContent = `Registered on: ${userData.registrationDate}`;
+      wpmElem.textContent = `WPM: ${userData.wpm || 0}`;
+      accuracyElem.textContent = `Accuracy: ${userData.accuracy || 0}%`;
+      totalActivitiesElem.textContent = `Total Activities: ${userData.history?.length || 0}`;
+
+      // Populate activity history table
+      if (userData.history) {
+        historyTable.innerHTML = ""; // Clear any previous rows
+        userData.history.forEach((activity) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${new Date(activity.date).toLocaleString()}</td>
+            <td>Typing Test</td>
+            <td>${activity.wpm}</td>
+            <td>${activity.accuracy}%</td>
+          `;
+          historyTable.appendChild(row);
+        });
+      }
+    } else {
+      console.error("No user profile found!");
+    }
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+  }
+};
+
+
+    // Check authentication and load data
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        fetchUserData(user.uid);
+      } else {
+        alert("Please log in to view your dashboard.");
+        window.location.href = "login.html";
+      }
+    });
+
+    // Dark/Light Theme Toggle Function
+    function toggleTheme() {
+      document.body.classList.toggle("dark-theme");
+    }
+  </script>
+</body>
+</html>
